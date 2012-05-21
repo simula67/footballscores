@@ -1,0 +1,8 @@
+This is a Django based Web Application that is used to
+record and retrieve the scores, scorers etc of soccer matches.
+
+It should provide easy access to varius operations such as topscorers,
+support for different competitions etc.
+
+Not intended for production use.
+Just started out as a hobby for studying Django.

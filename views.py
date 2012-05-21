@@ -3,21 +3,22 @@ from footballscores.models import *
 from django.template.loader import get_template
 from django.template import Context, Template
 class TemplateInput:
-    gameDate = "" #String gameDate 
-    games = [] #List of TemplateGames objects
+    def __init__(self):   
+        self.gameDate = "" #String gameDate 
+        self.games = [] #List of TemplateGames objects
 class TemplateGames:
-    homeTeam = "" #String homeTeam Name
-    awayTeam = "" #String awayTeam Name
-    homeTeamGoalsNo = 0 #int homeTeamGoalsNo
-    awayTeamGoalsNo = 0 #int awayTeamGoalsNo
-    homeTeamGoals = [] #List TemplateGoal objects
-    awayTeamGoals = [] #List TemplateGoal objects
+    def __init__(self):
+        self.homeTeam = "" 
+        self.awayTeam = "" 
+        self.homeTeamGoalsNo = 0
+        self.awayTeamGoalsNo = 0
+        self.homeTeamGoals = []
+        self.awayTeamGoals = []
 class TemplateGoal:
-    scoreTime = "" #String Score Time
-    scorer = "" #String scorer name
+    def __init__(self):
+        self.scoreTime = "" #String Score Time
+        self.scorer = "" #String scorer name
 
-def hello(request):
-    return HttpResponse("Hello world");
 def root(request):
     latestGames = Fixture.objects.order_by('-gameDate').all()[:10]
     gameDates = []
@@ -43,18 +44,21 @@ def root(request):
             templateGamesObject.homeTeam = game.homeTeam.name
             templateGamesObject.awayTeam = game.awayTeam.name
             for goal in goals:
-                if goal.scorer.team == templateGamesObject.homeTeam:
+                if goal.scorer.team.name == templateGamesObject.homeTeam:
                     templateGamesObject.homeTeamGoalsNo += 1
                     templateGoalObject = TemplateGoal()
                     templateGoalObject.scorer = goal.scorer.name
                     templateGoalObject.scoreTime = goal.scoreTime
                     templateGamesObject.homeTeamGoals.append(templateGoalObject )
                 else:
-                    templateGamesObject.awayTeamGoalsNo += 1
-                    templateGoalObject = TemplateGoal()
-                    templateGoalObject.scorer =goal.scorer.name
-                    templateGoalObject.scoreTime = goal.scoreTime
-                    templateGamesObject.awayTeamGoals.append(templateGoalObject )
+                    if goal.scorer.team.name == templateGamesObject.awayTeam:
+                        templateGamesObject.awayTeamGoalsNo += 1
+                        templateGoalObject = TemplateGoal()
+                        templateGoalObject.scorer = goal.scorer.name
+                        templateGoalObject.scoreTime = goal.scoreTime
+                        templateGamesObject.awayTeamGoals.append(templateGoalObject )
+                    else:
+                        return HttpResponse(status=500)
             templateInputObject.games.append(templateGamesObject)
         finalList.append(templateInputObject)
     frontPageTemplate = get_template("frontpage.html")

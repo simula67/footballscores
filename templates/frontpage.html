@@ -2,17 +2,32 @@
 {% block title %}Latest Football Scores{% endblock %}
 
 {% block content %}
+<center><h1>Latest Scores<h1></center>
 <p>
 <ul>
 {% for i in finalList %}
-
 <li> {{ i.gameDate }} </li>
 <ul>
-  {% for j in i.games %}
- <li> {{ j.homeTeam }} {{ j.homeTeamGoalsNo }} - {{ j.awayTeamGoalsNo }} {{ j.awayTeam }} </li>
+ {% for j in i.games %}
+    <li> {{ j.homeTeam }} {{ j.homeTeamGoalsNo }} - {{ j.awayTeamGoalsNo }} {{ j.awayTeam }} </li>
 
-
-  {% endfor %}
+    {% if j.homeTeamGoals %}
+    {{ j.homeTeam }} : 
+    {% endif %}
+    <ul>
+    {% for k in j.homeTeamGoals %}
+       <li>{{ k.scorer }} : {{ k.scoreTime }}</li>
+    {% endfor %}
+    </ul>
+    {% if j.awayTeamGoals %}
+    {{ j.awayTeam }} : 
+    {% endif %}
+    <ul>
+    {% for l in j.awayTeamGoals %}
+        <li>{{ l.scorer }} : {{ l.scoreTime }}</li>
+    {% endfor %}
+    </ul>
+ {% endfor %}
 </ul>
 {% endfor %}
 </ul>
