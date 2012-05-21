@@ -1,11 +1,5 @@
 from django.db import models
-# Users of the site
 
-#Currently only admin
-class User(models.Model):
-    name = models.CharField(max_length=50)
-    password = models.CharField(max_length=50)
-# Site Data
 class Competition(models.Model):
     name = models.CharField(max_length=50)
     def __unicode__(self):
@@ -24,13 +18,13 @@ class Player(models.Model):
 class Fixture(models.Model):
     homeTeam = models.ForeignKey(Team)
     awayTeam = models.ForeignKey(Team,related_name='+')
-    date = models.DateField()
+    gameDate = models.DateField()
     competition = models.ForeignKey(Competition)
     def __unicode__(self):
-        return self.homeTeam.name + " vs " + self.awayTeam.name
+        return self.homeTeam.name + " vs " + self.awayTeam.name + " ( " + self.gameDate.strftime("%d-%B-%Y") + " )"
 class Goal(models.Model):
     scorer = models.ForeignKey(Player)
     scoreTime = models.CharField(max_length=30)
     game = models.ForeignKey(Fixture)
     def __unicode__(self):
-        return self.scorer.name
+        return self.game.__unicode__() + " : " + self.scoreTime + " [ " + self.scorer.name + " ]"

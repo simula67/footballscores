@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Latest Football Scores{% endblock %}
+
+{% block content %}
+<p>
+<ul>
+{% for i in finalList %}
+
+<li> {{ i.gameDate }} </li>
+
+{% endfor %}
+</ul>
+</p>
+{% endblock %}
