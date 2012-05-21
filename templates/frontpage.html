@@ -7,7 +7,13 @@
 {% for i in finalList %}
 
 <li> {{ i.gameDate }} </li>
+<ul>
+  {% for j in i.games %}
+ <li> {{ j.homeTeam }} {{ j.homeTeamGoalsNo }} - {{ j.awayTeamGoalsNo }} {{ j.awayTeam }} </li>
 
+
+  {% endfor %}
+</ul>
 {% endfor %}
 </ul>
 </p>
